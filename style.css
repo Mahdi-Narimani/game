@@ -1,0 +1,199 @@
+body {
+  font-family: Arial, sans-serif;
+  direction: rtl;
+}
+
+/* ********************************************************* */
+
+.container {
+  display: flex;
+}
+
+/* ********************************************************* */
+
+/* Start Board Game Styles */
+#game-board {
+  flex: 1;
+  position: relative;
+  height: 1000px;
+}
+
+.shape {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.circle {
+  border-radius: 100%;
+  background-color: aqua;
+}
+.square {
+  border-radius: 5px;
+  background-color: darkorange;
+}
+.trapezius {
+  background-color: chartreuse;
+  clip-path: polygon(0% 100%, 17.5% 0%, 82.5% 0%, 100% 100%);
+}
+.triangle {
+  background-color: purple;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+/* End Board Game Styles */
+
+/* ********************************************************* */
+
+/* Start Slider Styles */
+#sidebar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 100vh;
+  padding: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  background-color: rgb(234, 214, 250);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 300px;
+}
+
+.heart-box {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  box-shadow: 3px 3px 5px #b9b9b9;
+  background-color: white;
+  padding-inline: 50px;
+  border-radius: 10px;
+}
+
+.heart-icon {
+  color: red;
+  font-size: 20px;
+}
+
+.heart-size {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.score-paragraph {
+  font-size: 20px;
+  text-align: center;
+}
+
+#score {
+  font-weight: 800;
+}
+
+.btn-box {
+  width: 100%;
+}
+
+button {
+  width: 100%;
+  margin-bottom: 10px;
+  border: none;
+  height: 50px;
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  box-shadow: 3px 3px 5px #555555;
+}
+#start-btn {
+  background-color: #1a57ff;
+  border-bottom: 5px solid #002e8b;
+  transition: all 0.5s ease-in-out;
+}
+#start-btn:active {
+  border: none;
+}
+
+#end-btn {
+  background-color: #ff2323;
+  border-bottom: 5px solid #8d0000;
+  transition: all 0.5s ease-in-out;
+}
+#end-btn:active {
+  border: none;
+}
+/* End Slider Styles */
+
+/* The Modal (background) */
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+  
+}
+
+@keyframes modal {
+  from{
+    transform: translateY(-200%);
+  }
+  to{
+    transform: translateY(0);
+  }
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 20px;
+  width: 50%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: modal 1s ease-in-out;
+}
+
+/* The Close Button */
+.close {
+  color: red;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 20px;
+  cursor: pointer;
+}
+
+.score-modal {
+  width: 500px;
+  text-align: center;
+  background-color: #002e8b;
+  padding-block: 20px;
+  border-radius: 20px;
+  font-size: 20px;
+  color: darkorange;
+}
+.lives-modal {
+  text-align: center;
+  background-color: #940000;
+  padding-block: 20px;
+  width: 500px;
+  border-radius: 20px;
+  font-size: 20px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
