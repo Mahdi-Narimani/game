@@ -1,31 +1,3 @@
-import "./style.css";
-
-document.querySelector("#app").innerHTML = `
-    <div class="container">
-        <div id="game-board">
-        <span class="endLine"></span>
-        </div>
-        <div id="sidebar">
-        <div>
-        <div class='score-box'>
-        <p class='score-paragraph'>Score: <span id="score">0</span></p>
-        </div>
-        <div class='heart-box'>
-        <p class="heart-size" id="lives"></p>
-        <i class="fa-solid fa-heart heart-icon"></i>
-        </div>
-        </div>
-
-        <div id="timer">00:00</div>
-
-          <div class="btn-box">
-            <button id="start-btn">Start Game</button>
-            <button id="end-btn">End Game</button>
-          </div>
-        </div>
-    </div>
-`;
-
 document.addEventListener("DOMContentLoaded", () => {
   const gameBoarde = document.getElementById("game-board");
   const scoreDisplay = document.getElementById("score");
@@ -33,14 +5,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const startGameBtn = document.getElementById("start-btn");
   const endGameBtn = document.getElementById("end-btn");
   const timerDisplay = document.getElementById("timer");
-  const closeModalBtn = document.getElementById("close");
-  const modal = document.getElementById("modal");
-  const modalContent = document.querySelector(".modal-content");
 
   let minutes = 0;
   let seconds = 0;
   let timerInterval;
   let speedGame = 10;
+  const boarderHeight = gameBoarde.scrollHeight;
+ 
 
   const shapes = [];
 
@@ -48,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let lives = 3;
   liveDisplay.innerText = lives;
 
-  const startTimer = () => {
+  function startTimer() {
     timerInterval = setInterval(() => {
       seconds++;
       speedGame--;
@@ -60,19 +31,19 @@ document.addEventListener("DOMContentLoaded", () => {
         .toString()
         .padStart(2, "0")}`;
     }, 1000);
-  };
+  }
 
   // Start Game
-  const startGame = () => {
+  function startGame() {
     startTimer();
     startGameBtn.style.display = "none";
     const numShapes = 2;
     // Math.floor(Math.random() * 20) + 1; // تعداد تصادفی اشیاء
     createRandomShapes(numShapes); // ایجاد اشیاء تصادفی
-  };
+  }
 
   // End Game
-  const endGame = (Interval) => {
+  function endGame(Interval) {
     clearInterval(Interval);
     gameBoarde.insertAdjacentHTML(
       "afterbegin",
@@ -88,41 +59,32 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
       </div>`
     );
-  };
 
-  // close modal
-  if (closeModalBtn) {
-    closeModalBtn.addEventListener("click", () => {
+    const modal = document.getElementById("modal");
+    document.getElementById("close").addEventListener("click", () => {
       console.log("closed");
       modal.style.display = "none";
     });
   }
-  if (modal) {
-    modal.addEventListener("click", (event) => {
-      if (!modalContent.contains(event.target)) {
-        modal.style.display = "none";
-      }
-    });
-  }
 
   // create random shapes
-  const createRandomShapes = (numShapes) => {
+  function createRandomShapes(numShapes) {
     for (let i = 0; i < numShapes; i++) {
       const randomX = Math.random() * 900; // مختصات افقی تصادفی
       const randomY = Math.random() * -100; // مختصات عمودی تصادفی
       createRandomShape(randomX, randomY); // ایجاد شکل با مختصات تصادفی
     }
-  };
+  }
 
-  const createRandomShape = (x, y) => {
+  function createRandomShape(x, y) {
     const shapes = ["circle", "square", "trapezius", "triangle"];
     const randomIndex = Math.floor(Math.random() * shapes.length); // نوع شکل تصادفی
     const randomShape = shapes[randomIndex];
     createShape(randomShape, x, y); // ایجاد شکل با نوع و مختصات تصادفی
-  };
+  }
 
   // Create Shape with type shape
-  const createShape = (type, x, y) => {
+  function createShape(type, x, y) {
     let shape = document.createElement("div");
     shape.classList.add("shape", type);
     shape.style.left = `${(Math.random() * x).toFixed(0)}px`;
@@ -137,10 +99,10 @@ document.addEventListener("DOMContentLoaded", () => {
       score++;
       scoreDisplay.innerText = score;
     });
-  };
+  }
 
   //  Move Shape on Screen
-  const moveShape = (shape) => {
+  function moveShape(shape) {
     let top = +shape.style.top.split("px").at(0);
 
     const moveInterval = setInterval(() => {
@@ -152,15 +114,14 @@ document.addEventListener("DOMContentLoaded", () => {
       shape.style.top = `${top}px`;
       decreaseLifeIfOutOfBounds(shape); // کم کردن یک جان اگر شکل خارج از صفحه است
     }, speedGame);
-  };
+  }
 
-  const decreaseLifeIfOutOfBounds = (shape) => {
+  function decreaseLifeIfOutOfBounds(shape) {
     if (shapes.length === 0) clearInterval(timerInterval);
 
     const top = parseFloat(shape.style.top).toFixed(0);
-    const boarderHeight = gameBoarde.scrollHeight - 10;
 
-    if (top >= 490) {
+    if (top >= boarderHeight) {
       removeShape(shape);
       if (lives > 0) {
         --lives;
@@ -170,16 +131,16 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
     }
-  };
+  }
 
   // Remove Shape from screen and shapes array
-  const removeShape = (shape) => {
+  function removeShape(shape) {
     shape.remove();
     const index = shapes.indexOf(shape);
     if (index !== -1) {
       shapes.splice(index, 1);
     }
-  };
+  }
 
   startGameBtn.addEventListener("click", startGame);
   endGameBtn.addEventListener("click", endGame);

@@ -1,3 +1,35 @@
+
+
+
+
+import "./style.css";
+
+document.querySelector("#app").innerHTML = `
+    <div class="container">
+        <div id="game-board">
+        <span class="endLine"></span>
+        </div>
+        <div id="sidebar">
+        <div>
+        <div class='score-box'>
+        <p class='score-paragraph'>Score: <span id="score">0</span></p>
+        </div>
+        <div class='heart-box'>
+        <p class="heart-size" id="lives"></p>
+        <i class="fa-solid fa-heart heart-icon"></i>
+        </div>
+        </div>
+
+        <div id="timer">00:00</div>
+
+          <div class="btn-box">
+            <button id="start-btn">Start Game</button>
+            <button id="end-btn">End Game</button>
+          </div>
+        </div>
+    </div>
+`;
+
 document.addEventListener("DOMContentLoaded", () => {
   const gameBoarde = document.getElementById("game-board");
   const scoreDisplay = document.getElementById("score");
@@ -21,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let lives = 3;
   liveDisplay.innerText = lives;
 
-  function startTimer() {
+  const startTimer = () => {
     timerInterval = setInterval(() => {
       seconds++;
       speedGame--;
@@ -33,19 +65,19 @@ document.addEventListener("DOMContentLoaded", () => {
         .toString()
         .padStart(2, "0")}`;
     }, 1000);
-  }
+  };
 
   // Start Game
-  function startGame() {
+  const startGame = () => {
     startTimer();
     startGameBtn.style.display = "none";
     const numShapes = 2;
     // Math.floor(Math.random() * 20) + 1; // تعداد تصادفی اشیاء
     createRandomShapes(numShapes); // ایجاد اشیاء تصادفی
-  }
+  };
 
   // End Game
-  function endGame(Interval) {
+  const endGame = (Interval) => {
     clearInterval(Interval);
     gameBoarde.insertAdjacentHTML(
       "afterbegin",
@@ -69,16 +101,16 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("closed");
         modal.style.display = "none";
       });
-  }
+  };
 
   // create random shapes
-  function createRandomShapes(numShapes) {
+  const createRandomShapes = (numShapes) => {
     for (let i = 0; i < numShapes; i++) {
       const randomX = Math.random() * 900; // مختصات افقی تصادفی
       const randomY = Math.random() * -100; // مختصات عمودی تصادفی
       createRandomShape(randomX, randomY); // ایجاد شکل با مختصات تصادفی
     }
-  }
+  };
 
   const createRandomShape = (x, y) => {
     const shapes = ["circle", "square", "trapezius", "triangle"];
