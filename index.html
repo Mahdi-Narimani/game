@@ -4,11 +4,35 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+    <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <div class="container">
+        <div id="game-board">
+        <span class="endLine"></span>
+        </div>
+        <div id="sidebar">
+        <div>
+        <div class='score-box'>
+        <p class='score-paragraph'>Score: <span id="score">0</span></p>
+        </div>
+        <div class='heart-box'>
+        <p class="heart-size" id="lives"></p>
+        <i class="fa-solid fa-heart heart-icon"></i>
+        </div>
+        </div>
+
+        <div id="timer">00:00</div>
+
+          <div class="btn-box">
+            <button id="start-btn">Start Game</button>
+            <button id="end-btn">End Game</button>
+          </div>
+        </div>
+    </div>
     <script type="module" src="/main.js"></script>
   </body>
 </html>
