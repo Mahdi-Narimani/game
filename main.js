@@ -72,9 +72,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // End Game
-  const endGame = (moveInterval) => {
-    clearInterval(moveInterval);
-    clearInterval(timerInterval);
+  const endGame = (Interval) => {
+    clearInterval(Interval);
     gameBoarde.insertAdjacentHTML(
       "afterbegin",
       `<div id="modal">
@@ -161,11 +160,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const top = parseFloat(shape.style.top).toFixed(0);
     const boarderHeight = gameBoarde.scrollHeight - 10;
 
-    
     if (top >= 490) {
       removeShape(shape);
-      --lives;
-      liveDisplay.innerText = lives;
+      if (lives > 0) {
+        --lives;
+        liveDisplay.innerText = lives;
+      }
+      if (lives === 0 && shapes.length === 0) {
+        return;
+      }
     }
   };
 
