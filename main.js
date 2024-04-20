@@ -60,9 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>`
     );
 
+    // close modal
     const modal = document.getElementById("modal");
     document.getElementById("close").addEventListener("click", () => {
-      console.log("closed");
       modal.style.display = "none";
     });
   }
