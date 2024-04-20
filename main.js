@@ -2,7 +2,9 @@ import "./style.css";
 
 document.querySelector("#app").innerHTML = `
     <div class="container">
-        <div id="game-board"></div>
+        <div id="game-board">
+        <span class="endLine"></span>
+        </div>
         <div id="sidebar">
         <div>
         <div class='score-box'>
@@ -24,8 +26,7 @@ document.querySelector("#app").innerHTML = `
     </div>
 `;
 
-document.addEventListener("DOMContentLoaded", () =>
-{
+document.addEventListener("DOMContentLoaded", () => {
   const gameBoarde = document.getElementById("game-board");
   const scoreDisplay = document.getElementById("score");
   const liveDisplay = document.getElementById("lives");
@@ -33,13 +34,13 @@ document.addEventListener("DOMContentLoaded", () =>
   const endGameBtn = document.getElementById("end-btn");
   const timerDisplay = document.getElementById("timer");
   const closeModalBtn = document.getElementById("close");
-  const modal = document.getElementById('modal');
+  const modal = document.getElementById("modal");
   const modalContent = document.querySelector(".modal-content");
-
 
   let minutes = 0;
   let seconds = 0;
   let timerInterval;
+  let speedGame = 10;
 
   const shapes = [];
 
@@ -47,77 +48,74 @@ document.addEventListener("DOMContentLoaded", () =>
   let lives = 3;
   liveDisplay.innerText = lives;
 
-  const startTimer = () =>
-  {
-    timerInterval = setInterval(() =>
-    {
+  const startTimer = () => {
+    timerInterval = setInterval(() => {
       seconds++;
-      if (seconds === 60)
-      {
+      speedGame--;
+      if (seconds === 60) {
         seconds = 0;
         minutes++;
       }
-      timerDisplay.innerHTML = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+      timerDisplay.innerHTML = `${minutes.toString().padStart(2, "0")}:${seconds
+        .toString()
+        .padStart(2, "0")}`;
     }, 1000);
   };
 
   // Start Game
-  const startGame = () =>
-  {
+  const startGame = () => {
     startTimer();
     startGameBtn.style.display = "none";
-    const numShapes = Math.floor(Math.random() * 3) + 1; // تعداد تصادفی اشیاء
+    const numShapes = 2;
+    // Math.floor(Math.random() * 20) + 1; // تعداد تصادفی اشیاء
     createRandomShapes(numShapes); // ایجاد اشیاء تصادفی
   };
 
   // End Game
-  const endGame = () =>
-  {
-    clearInterval(timerInterval)
+  const endGame = (moveInterval) => {
+    clearInterval(moveInterval);
+    clearInterval(timerInterval);
     gameBoarde.insertAdjacentHTML(
       "afterbegin",
       `<div id="modal">
           <div id="close">&times;</div>
           <!-- Modal content -->
           <div class="modal-content">
+            <div id='timer'>${minutes.toString().padStart(2, "0")}:${seconds
+        .toString()
+        .padStart(2, "0")}</div>
             <p class='score-modal'>score is: ${score}</p>
             <p class='lives-modal'> ${lives} <i class="fa-solid fa-heart heart-icon"></i> lives</p>
           </div>
       </div>`
     );
   };
-  if (closeModalBtn)
-  {
-    closeModalBtn.addEventListener("click", () =>
-    {
-      console.log('closed');
+
+  // close modal
+  if (closeModalBtn) {
+    closeModalBtn.addEventListener("click", () => {
+      console.log("closed");
       modal.style.display = "none";
     });
   }
-  if (modal)
-  {
-    modal.addEventListener("click", (event) =>
-    {
-      if (!modalContent.contains(event.target))
-      {
+  if (modal) {
+    modal.addEventListener("click", (event) => {
+      if (!modalContent.contains(event.target)) {
         modal.style.display = "none";
       }
     });
   }
 
   // create random shapes
-  const createRandomShapes = (numShapes) =>
-  {
-    for (let i = 0; i < numShapes; i++)
-    {
+  const createRandomShapes = (numShapes) => {
+    for (let i = 0; i < numShapes; i++) {
       const randomX = Math.random() * 900; // مختصات افقی تصادفی
       const randomY = Math.random() * -100; // مختصات عمودی تصادفی
       createRandomShape(randomX, randomY); // ایجاد شکل با مختصات تصادفی
     }
   };
 
-  const createRandomShape = (x, y) =>
-  {
+  const createRandomShape = (x, y) => {
     const shapes = ["circle", "square", "trapezius", "triangle"];
     const randomIndex = Math.floor(Math.random() * shapes.length); // نوع شکل تصادفی
     const randomShape = shapes[randomIndex];
@@ -125,19 +123,17 @@ document.addEventListener("DOMContentLoaded", () =>
   };
 
   // Create Shape with type shape
-  const createShape = (type, x, y) =>
-  {
+  const createShape = (type, x, y) => {
     let shape = document.createElement("div");
     shape.classList.add("shape", type);
-    shape.style.left = `${Math.random() * x}px`;
-    shape.style.top = `${Math.random() * y}px`;
+    shape.style.left = `${(Math.random() * x).toFixed(0)}px`;
+    shape.style.top = `${(Math.random() * y).toFixed(0)}px`;
 
     gameBoarde.appendChild(shape);
     shapes.push(shape);
     moveShape(shape);
 
-    shape.addEventListener("click", () =>
-    {
+    shape.addEventListener("click", () => {
       removeShape(shape);
       score++;
       scoreDisplay.innerText = score;
@@ -145,44 +141,39 @@ document.addEventListener("DOMContentLoaded", () =>
   };
 
   //  Move Shape on Screen
-  const moveShape = (shape) =>
-  {
+  const moveShape = (shape) => {
     let top = +shape.style.top.split("px").at(0);
 
-    const interval = setInterval(() =>
-    {
+    const moveInterval = setInterval(() => {
+      if (lives === 0) {
+        removeShape(shape);
+        endGame(moveInterval);
+      }
       top++;
       shape.style.top = `${top}px`;
-      decreaseLifeIfOutOfBounds(shape, interval); // کم کردن یک جان اگر شکل خارج از صفحه است
-    }, 10);
+      decreaseLifeIfOutOfBounds(shape); // کم کردن یک جان اگر شکل خارج از صفحه است
+    }, speedGame);
   };
 
-  const decreaseLifeIfOutOfBounds = (shape, interval) =>
-  {
-    const top = parseFloat(shape.style.top).toFixed(0);
-    const boarderHeight = gameBoarde.scrollHeight;
+  const decreaseLifeIfOutOfBounds = (shape) => {
+    if (shapes.length === 0) clearInterval(timerInterval);
 
-    console.log(top >= (boarderHeight - 100))
-    if (top >= boarderHeight - 100 && lives > 0)
-    {
+    const top = parseFloat(shape.style.top).toFixed(0);
+    const boarderHeight = gameBoarde.scrollHeight - 10;
+
+    
+    if (top >= 490) {
       removeShape(shape);
-      lives -= 1;
+      --lives;
       liveDisplay.innerText = lives;
-    }
-    else if (lives === 0)
-    {
-      endGame();
-      clearInterval(interval);
     }
   };
 
   // Remove Shape from screen and shapes array
-  const removeShape = (shape) =>
-  {
+  const removeShape = (shape) => {
     shape.remove();
     const index = shapes.indexOf(shape);
-    if (index !== -1)
-    {
+    if (index !== -1) {
       shapes.splice(index, 1);
     }
   };

@@ -15,13 +15,23 @@ body {
 #game-board {
     flex: 1;
     position: relative;
-    height: 1000px;
+    height: 500px;
+}
+.endLine{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 5px;
+    width: 100vw;
+    background-color: #8d0000;
+    border-radius: 20px;
+    z-index: 10;
 }
 
 .shape {
     position: absolute;
-    width: 25px;
-    height: 25px;
+    width: 35px;
+    height: 35px;
     cursor: pointer;
 }
 
@@ -51,7 +61,7 @@ body {
     top: 0;
     left: 0;
     width: 200px;
-    height: 100vh;
+    height: 500px;
     padding: 20px;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
@@ -94,6 +104,7 @@ body {
 #timer {
     font-size: 60px;
     color: black;
+    font-weight: 600;
 }
 
 .btn-box {
