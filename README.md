@@ -1,2 +1,1 @@
-You can click on the link below to start the game👇
-https://game-livid-two.vercel.app/
+You can click on the link to start the game👉 https://game-livid-two.vercel.app/
